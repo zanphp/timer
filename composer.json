@@ -6,7 +6,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Zan\\Framework\\Network\\Server\\Timer\\": "src"
+      "ZanPHP\\Timer\\": "src"
     },
     "files": [
     ]

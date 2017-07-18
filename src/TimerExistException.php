@@ -1,6 +1,6 @@
 <?php
 
-namespace Zan\Framework\Network\Server\Timer;
+namespace ZanPHP\Timer;
 
 
 use Exception;
