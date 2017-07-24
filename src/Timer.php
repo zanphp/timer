@@ -2,7 +2,8 @@
 
 namespace ZanPHP\Timer;
 
-use Zan\Framework\Foundation\Exception\System\InvalidArgumentException;
+
+use ZanPHP\Exception\System\InvalidArgumentException;
 
 class Timer
 {
