@@ -97,11 +97,13 @@ class Timer
         }
 
         $timerId = self::$afterMap[$jobId];
-        $isCleared = swoole_timer_clear($timerId);
-
-        if($isCleared){
-            unset(self::$afterMap[$jobId]);
+        $isCleared = false;
+        if (swoole_timer_exists($timerId)) {
+            swoole_timer_clear($timerId);
+            $isCleared = true;
         }
+
+        unset(self::$afterMap[$jobId]);
 
         return $isCleared;
     }
