@@ -73,13 +73,13 @@ class Timer
             return false;
         }
 
+        $isCleared = false;
         $timerId = self::$tickMap[$jobId];
-        $isCleared = swoole_timer_clear($timerId);
-
-        if($isCleared){
-            unset(self::$tickMap[$jobId]);
+        if (swoole_timer_exists($timerId)) {
+            swoole_timer_clear($timerId);
+            $isCleared = true;
         }
-
+        unset(self::$tickMap[$jobId]);
         return $isCleared;
     }
 
