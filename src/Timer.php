@@ -21,13 +21,15 @@ class Timer
      * @throws InvalidArgumentException
      * @throws TimerExistException
      */
-    public static function tick($interval, Callable $callback, $jobId='')
+    public static function tick($interval, callable $callback, $jobId='')
     {
         self::valid($interval);
         $jobId = self::formatJobId($jobId);
 
         if (isset(self::$tickMap[$jobId])) {
-            throw new TimerExistException('job name is exist! >>> ' . $jobId);
+            // throw new TimerExistException('job name is exist! >>> ' . $jobId);
+            sys_error("timer id has existed: $jobId");
+            return false;
         }
 
         $timerId = swoole_timer_tick($interval, self::formateTickCallback($jobId, $callback));
@@ -46,13 +48,15 @@ class Timer
      * @throws InvalidArgumentException
      * @throws TimerExistException
      */
-    public static function after($interval, Callable $callback, $jobId='')
+    public static function after($interval, callable $callback, $jobId='')
     {
         self::valid($interval);
         $jobId = self::formatJobId($jobId);
 
         if (isset(self::$afterMap[$jobId])) {
-            throw new TimerExistException('job name is exist! >>> ' . $jobId);
+            // throw new TimerExistException('job name is exist! >>> ' . $jobId);
+            sys_error("timer id has existed: $jobId");
+            return false;
         }
 
         $timerId = swoole_timer_after($interval, self::formateAfterCallback($jobId, $callback));
@@ -139,7 +143,7 @@ class Timer
      * @param callable $callback
      * @return \Closure
      */
-    private static function formateTickCallback($jobId, Callable $callback)
+    private static function formateTickCallback($jobId, callable $callback)
     {
         return function() use ($jobId, $callback) {
             call_user_func($callback, $jobId);
@@ -151,7 +155,7 @@ class Timer
      * @param callable $callback
      * @return \Closure
      */
-    private static function formateAfterCallback($jobId, Callable $callback)
+    private static function formateAfterCallback($jobId, callable $callback)
     {
         return function() use ($jobId, $callback) {
             Timer::clearAfterMap($jobId);
